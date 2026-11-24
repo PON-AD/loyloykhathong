@@ -223,6 +223,6 @@ function launchKrathong() {
 }
 window.onload = () => {
     updateQuotaDisplay(); 
-    setTimeout(() => createKrathongElement("ตัวแทนสภานักเรียนโรงเรียนเทศบาล๒", "สืบสานประเพณีไทย ร่วมใจรักษ์สายน้ำ", "🪷", false), 400);
+    setTimeout(() => createKrathongElement("ตัวแทนสภานักเรียนโรงเรียนเทศบาล๒", "ขอให้เพื่อนๆ น้องๆ และคุณครูทุกท่าน สุขภาพแข็งแรง สมหวังทุกประการ", "🪷", false), 400);
     setInterval(createFirework, 600);
 };
