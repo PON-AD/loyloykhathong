@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ลอยกระทงออนไลน์ - โรงเรียนเทศบาล ๒ (แม่ต๋ำดรุณเวทย์)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="stars"></div>
+    <div class="moon"></div>
+    <div class="moon-reflection"></div>
+
+    <div class="fireworks-container" id="fireworksContainer"></div>
+
+    <div class="lantern" style="left: 12%; animation-delay: 0s;">🏮</div>
+    <div class="lantern" style="left: 28%; animation-delay: 6s;">🏮</div>
+    <div class="lantern" style="left: 75%; animation-delay: 3s;">🏮</div>
+    <div class="lantern" style="left: 88%; animation-delay: 10s;">🏮</div>
+
+    <div class="header-banner">
+        <div class="school-title">✨ โรงเรียนเทศบาล ๒ (แม่ต๋ำดรุณเวทย์) ✨</div>
+        <div class="sub-title">สืบสานประเพณีลอยกระทงออนไลน์ ร่วมขอขมาพระแม่คงคา</div>
+    </div>
+
+    <div class="control-panel">
+        <span class="select-label">เลือกแบบกระทงของคุณ</span>
+        <div class="krathong-select" id="krathongOptions">
+            <div class="krathong-option active" data-type="icon" data-icon="🪷">
+                <span class="icon">🪷</span>
+                <span class="label">ดอกบัว</span>
+            </div>
+            <div class="krathong-option" data-type="draw">
+                <span class="icon">🎨</span>
+                <span class="label">วาดเอง</span>
+            </div>
+        </div>
+
+        <div class="draw-area" id="drawArea" style="display: none;">
+            <canvas id="krathongCanvas" width="340" height="190"></canvas>
+            <div class="draw-tools">
+                <div class="color-palette" id="colorPalette">
+                    <span class="color-dot active" style="background: #16a34a;" data-color="#16a34a" title="สีใบตอง"></span>
+                    <span class="color-dot" style="background: #db2777;" data-color="#db2777" title="สีกลีบบัว"></span>
+                    <span class="color-dot" style="background: #ca8a04;" data-color="#ca8a04" title="สีทอง"></span>
+                    <span class="color-dot" style="background: #dc2626;" data-color="#dc2626" title="สีแดง"></span>
+                    <span class="color-dot" style="background: #2563eb;" data-color="#2563eb" title="สีน้ำเงิน"></span>
+                    <span class="color-dot" style="background: #111111;" data-color="#111111" title="สีดำ"></span>
+                </div>
+                <div class="brush-actions">
+                    <input type="range" id="brushSize" min="3" max="25" value="10" title="ขนาดเส้น">
+                    <button type="button" class="clear-btn" onclick="clearCanvas()">🗑️ ล้างภาพ</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="userName" placeholder="ชื่อ-นามสกุล / ชั้นเรียน (เช่น ด.ช.รักเรียน ป.6/1)" maxlength="35">
+            <input type="text" id="userWish" placeholder="คำอธิษฐานของคุณ..." maxlength="70">
+        </div>
+        <button class="launch-btn" onclick="launchKrathong()">🌕 ปล่อยกระทงลงสู่สายน้ำ 🌕</button>
+    </div>
+
+    <div class="river" id="river">
+        <!-- อนุสาวรีย์พญานาคและเจดีย์กลางน้ำกว๊านพะเยา (แบบกราฟิก SVG) -->
+        <div class="phayanak-center-bg">
+            <svg class="kwan-phayao-svg" viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#fff3a8" />
+                        <stop offset="45%" stop-color="#ffd700" />
+                        <stop offset="100%" stop-color="#b8860b" />
+                    </linearGradient>
+                    <linearGradient id="nagaBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="60%" stop-color="#e2e8f0" />
+                        <stop offset="100%" stop-color="#94a3b8" />
+                    </linearGradient>
+                    <pattern id="thaiLattice" width="16" height="16" patternUnits="userSpaceOnUse">
+                        <rect width="16" height="16" fill="rgba(184, 134, 11, 0.25)" />
+                        <path d="M 0 8 L 8 0 L 16 8 L 8 16 Z" fill="none" stroke="#ffd700" stroke-width="1.2"/>
+                    </pattern>
+                </defs>
+
+                <!-- กลุ่มพญานาคซ้าย -->
+                <g class="naga-left">
+                    <rect x="40" y="185" width="290" height="45" fill="url(#thaiLattice)" stroke="#ffd700" stroke-width="2" rx="3"/>
+                    <path d="M 55 170 Q 85 135, 115 165 T 175 165 T 235 155 T 295 165 C 315 165, 320 120, 310 85" 
+                          fill="none" stroke="url(#nagaBodyGrad)" stroke-width="20" stroke-linecap="round"/>
+                    <path d="M 55 170 Q 85 135, 115 165 T 175 165 T 235 155 T 295 165 C 315 165, 320 120, 310 85" 
+                          fill="none" stroke="url(#goldGrad)" stroke-width="22" stroke-linecap="round" opacity="0.35"/>
+                    <path d="M 80 143 L 75 128 L 90 142 M 145 148 L 142 132 L 156 147 M 205 140 L 203 122 L 218 139 M 265 148 L 265 130 L 278 148" 
+                          fill="url(#goldGrad)"/>
+                    <path d="M 295 145 Q 270 135, 265 110 Q 285 125, 302 130 Z" fill="url(#goldGrad)"/>
+                    <path d="M 300 95 C 295 65, 310 45, 305 22 C 318 40, 325 55, 322 72 C 335 72, 345 78, 342 86 C 332 88, 325 88, 322 92 C 332 95, 338 100, 333 105 C 322 105, 312 100, 305 102 Z" 
+                          fill="url(#goldGrad)"/>
+                    <path d="M 55 170 Q 30 155, 20 172 Q 38 175, 50 178 Z" fill="url(#goldGrad)"/>
+                </g>
+
+                <!-- กลุ่มพญานาคขวา -->
+                <g class="naga-right" transform="translate(900, 0) scale(-1, 1)">
+                    <rect x="40" y="185" width="290" height="45" fill="url(#thaiLattice)" stroke="#ffd700" stroke-width="2" rx="3"/>
+                    <path d="M 55 170 Q 85 135, 115 165 T 175 165 T 235 155 T 295 165 C 315 165, 320 120, 310 85" 
+                          fill="none" stroke="url(#nagaBodyGrad)" stroke-width="20" stroke-linecap="round"/>
+                    <path d="M 55 170 Q 85 135, 115 165 T 175 165 T 235 155 T 295 165 C 315 165, 320 120, 310 85" 
+                          fill="none" stroke="url(#goldGrad)" stroke-width="22" stroke-linecap="round" opacity="0.35"/>
+                    <path d="M 80 143 L 75 128 L 90 142 M 145 148 L 142 132 L 156 147 M 205 140 L 203 122 L 218 139 M 265 148 L 265 130 L 278 148" 
+                          fill="url(#goldGrad)"/>
+                    <path d="M 295 145 Q 270 135, 265 110 Q 285 125, 302 130 Z" fill="url(#goldGrad)"/>
+                    <path d="M 300 95 C 295 65, 310 45, 305 22 C 318 40, 325 55, 322 72 C 335 72, 345 78, 342 86 C 332 88, 325 88, 322 92 C 332 95, 338 100, 333 105 C 322 105, 312 100, 305 102 Z" 
+                          fill="url(#goldGrad)"/>
+                    <path d="M 55 170 Q 30 155, 20 172 Q 38 175, 50 178 Z" fill="url(#goldGrad)"/>
+                </g>
+
+                <!-- กลุ่มเจดีย์กลางน้ำ -->
+                <g class="center-pagoda-group">
+                    <rect x="360" y="195" width="180" height="35" fill="#f8fafc" stroke="#ffd700" stroke-width="2" rx="4"/>
+                    <rect x="385" y="175" width="130" height="20" fill="url(#goldGrad)" rx="2"/>
+                    <polygon points="395,175 505,175 495,152 405,152" fill="url(#goldGrad)"/>
+                    <polygon points="408,152 492,152 484,130 416,130" fill="url(#goldGrad)"/>
+                    <polygon points="418,130 482,130 475,108 425,108" fill="url(#goldGrad)"/>
+                    <polygon points="428,108 472,108 465,86 435,86" fill="url(#goldGrad)"/>
+                    <polygon points="438,86 462,86 450,35" fill="url(#goldGrad)"/>
+                    <line x1="450" y1="35" x2="450" y2="12" stroke="#ffd700" stroke-width="3"/>
+                    <circle cx="450" cy="12" r="3.5" fill="#ffffff"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="waves-container">
+            <svg class="wave-svg wave-back" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z"></path>
+            </svg>
+            <svg class="wave-svg wave-front" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,50 C200,10 400,90 600,50 C800,10 1000,90 1200,50 L1200,120 L0,120 Z"></path>
+            </svg>
+        </div>
+        <div class="water-sparkles"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAQan735HMz8SVtIqn54bv_X9CPns6aZ4",
+        authDomain: "loykhathong-ac41e.firebaseapp.com",
+        databaseURL: "https://loykhathong-ac41e-default-rtdb.firebaseio.com", // ต้องตรงกับ URL บนหน้า Data ของ Realtime Database
+        projectId: "loykhathong-ac41e",
+        storageBucket: "loykhathong-ac41e.firebasestorage.app",
+        messagingSenderId: "288865667829",
+        appId: "1:288865667829:web:8f647ea6b7d55b7cf8125c",
+        measurementId: "G-8NSOMCSXEM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const krathongsRef = ref(db, 'krathongs');
+
+    window.sendKrathongToFirebase = function(name, wish, visualContent, isCustom) {
+        push(krathongsRef, {
+            name, wish, visualContent, isCustom,
+            timestamp: Date.now()
+        }).catch(err => {
+            console.error(err);
+            alert("ส่งกระทงไม่สำเร็จ (ตรวจสอบ Firebase Rules)");
+        });
+    };
+
+    // โหลดกระทงล่าสุด 20 ใบ + รับกระทงใหม่แบบ real-time
+    onChildAdded(query(krathongsRef, limitToLast(20)), (snapshot) => {
+        const d = snapshot.val();
+        createKrathongElement(d.name, d.wish, d.visualContent, d.isCustom);
+    });
+    </script>
+</body>
+</html>
